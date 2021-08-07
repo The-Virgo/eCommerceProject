@@ -23,6 +23,7 @@ namespace eCommerceProject.Models
         /// <summary>
         /// Retail price as US currency
         /// </summary>
+        [DataType(DataType.Currency)]
         public double Price { get; set; }
 
         /// <summary>
