@@ -38,6 +38,8 @@ namespace eCommerceProject
                 options.Cookie.IsEssential = true;
             });
 
+            services.AddHttpContextAccessor();
+
             //ALTERNATIVE TO LAMBDA EXPRESSION SYNTAX
             //services.AddDbContext<ProductContext>(AddSqlServer);
         }
