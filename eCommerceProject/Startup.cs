@@ -30,6 +30,16 @@ namespace eCommerceProject
             services.AddDbContext<ProductContext>(options =>
               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.IsEssential = true;
+            });
+
+            services.AddHttpContextAccessor();
+
             //ALTERNATIVE TO LAMBDA EXPRESSION SYNTAX
             //services.AddDbContext<ProductContext>(AddSqlServer);
         }
@@ -58,6 +68,8 @@ namespace eCommerceProject
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
