@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using eCommerceProject.Data;
+using eCommerceProject.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +13,31 @@ namespace eCommerceProject.Controllers
 {
     public class CartController : Controller
     {
-        public IActionResult Add(int id)
+        private readonly ProductContext _context;
+        private readonly IHttpContextAccessor _httpContext;
+
+        public CartController(ProductContext context, IHttpContextAccessor httpContext)
         {
-            // Get product from database
+            _context = context;
+            _httpContext = httpContext;
+        }
+        public async Task<IActionResult> Add(int id)
+        {
+            Product p = await ProductDb.GetProductAsync(_context, id);
 
             // Add product to cart cookie
+            string data = JsonConvert.SerializeObject(p);
+            CookieOptions options = new CookieOptions()
+            {
+                Expires = DateTime.Now.AddYears(1),
+                Secure = true,
+                IsEssential = true
+            };
+
+            _httpContext.HttpContext.Response.Cookies.Append("CartCookie", data, options);
 
             // Redirect back to previous page
-
-            return View();
+            return RedirectToAction("Index", "Product");
         }
 
         public IActionResult Summary()
