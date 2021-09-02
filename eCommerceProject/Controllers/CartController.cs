@@ -27,6 +27,8 @@ namespace eCommerceProject.Controllers
 
             CookieHelper.AddProductToCart(_httpContext, p);
 
+            TempData["Message"] = p.Title + " added to cart";
+
             // Redirect back to previous page
             return RedirectToAction("Index", "Product");
         }
