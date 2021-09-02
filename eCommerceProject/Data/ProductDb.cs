@@ -46,5 +46,14 @@ namespace eCommerceProject.Data
             return p;
         }
 
+        public static async Task<Product> GetProductAsync(ProductContext context, int prodId)
+        {
+            Product p = await (from products in context.Products
+                               where products.ProductID == prodId
+                               select products).SingleAsync();
+
+            return p;
+        }
+
     }
 }
